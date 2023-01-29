@@ -2,9 +2,9 @@ package com.example.youtubesearch.models
 
 import com.squareup.moshi.Json
 
-class VideoIDModel (
+class VideoIDModel(
     @field:Json(name = "kind")
-    var kind : String,
+    var kind: String,
     @field:Json(name = "videoId")
-    var videoId : String
+    var videoId: String
 )

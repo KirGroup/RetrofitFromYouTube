@@ -2,11 +2,11 @@ package com.example.youtubesearch.models
 
 import com.squareup.moshi.Json
 
-class ResponseModel (
-    @field:Json(name="nextPageToken")
-    var nextPageToken : String,
+class ResponseModel(
+    @field:Json(name = "nextPageToken")
+    var nextPageToken: String,
     @field:Json(name = "items")
-    var items : List<VideoModel>,
+    var items: List<VideoModel>,
     @field:Json(name = "error")
-    var error : ErrorModel
+    var error: ErrorModel
 )

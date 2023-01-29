@@ -18,5 +18,5 @@ interface APIInterface {
     ): Call<ResponseModel>
 
     @GET("${SCH}+${part}+${mx}")
-    fun searchVideo(@Query("key") key: String?,@Query("q") q : String): Call<ResponseModel>
+    fun searchVideo(@Query("key") key: String?, @Query("q") q: String): Call<ResponseModel>
 }

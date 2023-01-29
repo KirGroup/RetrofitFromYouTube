@@ -14,13 +14,14 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.youtubesearch.R
 import com.example.youtubesearch.adapters.YoutubeSearchAdapter
 import com.example.youtubesearch.models.ErrorModel
 import com.example.youtubesearch.models.ResponseModel
 import com.example.youtubesearch.models.VideoModel
 import com.example.youtubesearch.network.APIClient
 import com.example.youtubesearch.network.APIClient.API_KEY
+import com.youtubesearch.R
+import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,10 +30,12 @@ import retrofit2.Response
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var mConstraintLayoutHome: ConstraintLayout
-    private lateinit var mRecyclerViewHome: RecyclerView
 
     private lateinit var mYoutubeSearchAdapter: YoutubeSearchAdapter
+    private lateinit var mRecyclerViewHome: RecyclerView
+
     private var mVideoModelList: ArrayList<VideoModel> = ArrayList()
+
     var mSearchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
 
@@ -94,11 +97,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun setAdapter(mSearchaVideosList: ArrayList<VideoModel>) {
         context?.let {
             mYoutubeSearchAdapter = YoutubeSearchAdapter(
-                it,
-                mSearchaVideosList
+                it
             )
-            mYoutubeSearchAdapter.notifyDataSetChanged()
             mRecyclerViewHome.adapter = mYoutubeSearchAdapter
+            mYoutubeSearchAdapter.submitList(mSearchaVideosList)
         }
     }
 
