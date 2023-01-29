@@ -7,21 +7,16 @@ import com.bumptech.glide.Glide
 import com.example.youtubesearch.adapters.holder.MyViewHolder
 import com.example.youtubesearch.models.VideoModel
 import com.youtubesearch.R
+import com.youtubesearch.databinding.CustomItemLayoutBinding
 import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
 
 class YoutubeSearchAdapter(
-    var mContext: Context,
+    var mContext: Context
 ) : ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
-            LayoutInflater
-                .from(mContext)
-                .inflate(
-                    R.layout.custom_item_layout,
-                    parent,
-                    false
-                )
+            CustomItemLayoutBinding.inflate(LayoutInflater.from(parent.context))
         )
     }
 

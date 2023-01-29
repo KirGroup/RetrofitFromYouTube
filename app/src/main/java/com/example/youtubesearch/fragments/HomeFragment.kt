@@ -4,15 +4,13 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentHostCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubesearch.adapters.YoutubeSearchAdapter
 import com.example.youtubesearch.models.ErrorModel
@@ -21,13 +19,16 @@ import com.example.youtubesearch.models.VideoModel
 import com.example.youtubesearch.network.APIClient
 import com.example.youtubesearch.network.APIClient.API_KEY
 import com.youtubesearch.R
+import com.youtubesearch.databinding.FragmentHomeBinding
 import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
+
+    private lateinit var binding: FragmentHomeBinding
 
     private lateinit var mConstraintLayoutHome: ConstraintLayout
 
@@ -39,15 +40,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     var mSearchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        mConstraintLayoutHome = binding.constraintLayoutHome
+        mRecyclerViewHome = binding.recyclerViewHome
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        mConstraintLayoutHome = view.findViewById(R.id.constraintLayoutHome)
-        mRecyclerViewHome = view.findViewById(R.id.recyclerViewHome)
-
         setHasOptionsMenu(true)
     }
 

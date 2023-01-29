@@ -4,18 +4,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.youtubesearch.R
+import com.youtubesearch.databinding.CustomItemLayoutBinding
 
-class MyViewHolder(mItemView: View) : RecyclerView.ViewHolder(mItemView) {
-    var mImageViewThumbnail: ImageView =
-        mItemView.findViewById(R.id.imageviewCustomItemLayout)
-
-    var mTextViewTitle: TextView =
-        mItemView.findViewById(R.id.textviewCustomItemLayoutHeading)
-
-    var mTextViewDescription: TextView =
-        mItemView.findViewById(R.id.textviewCustomItemLayoutChannel)
-
-    var mTextViewTime: TextView =
-        mItemView.findViewById(R.id.textviewCustomItemLayoutViews)
+class MyViewHolder(binding: CustomItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    var mImageViewThumbnail: ImageView = binding.imageviewCustomItemLayout
+    var mTextViewTitle: TextView = binding.textviewCustomItemLayoutHeading
+    var mTextViewDescription: TextView = binding.textviewCustomItemLayoutChannel
+    var mTextViewTime: TextView = binding.textviewCustomItemLayoutViews
 }
