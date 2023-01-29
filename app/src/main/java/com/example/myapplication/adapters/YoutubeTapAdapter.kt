@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.android.youtubesearch.R
 import com.android.youtubesearch.models.VideoModel
 import com.bumptech.glide.Glide
-import com.example.myapplication.R
+import com.myapplication.R
 import kotlin.collections.ArrayList
 
 class YoutubeTapAdapter(
@@ -24,7 +23,7 @@ class YoutubeTapAdapter(
             LayoutInflater
                 .from(mContext)
                 .inflate(
-                    R.layout.custom_item_layout,
+                    R.layout.view_item_layout,
                     parent,
                     false
                 )
