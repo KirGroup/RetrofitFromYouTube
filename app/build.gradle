@@ -1,16 +1,16 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 29
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.android.myapplication"
+        applicationId "com.android.youtubesearch"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
