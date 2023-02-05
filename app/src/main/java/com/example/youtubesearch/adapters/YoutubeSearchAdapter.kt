@@ -22,11 +22,11 @@ class YoutubeSearchAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        Glide.with(mContext).load(getItem(position).snippet.thumbnails.medium.url)
-            .placeholder(R.drawable.splash_theme)
-            .into(holder.mImageViewThumbnail)
-        holder.mTextViewTitle.text = getItem(position).snippet.title
-        holder.mTextViewDescription.text = getItem(position).snippet.description
-        holder.mTextViewTime.text = getItem(position).snippet.publishedAt
+//        Glide.with(mContext).load(getItem(position).snippet.thumbnails.medium.url)
+//            .placeholder(R.drawable.splash_theme)
+//            .into(holder.mImageViewThumbnail)
+//        holder.mTextViewTitle.text = getItem(position).snippet.title
+//        holder.mTextViewDescription.text = getItem(position).snippet.description
+//        holder.mTextViewTime.text = getItem(position).snippet.publishedAt
     }
 }

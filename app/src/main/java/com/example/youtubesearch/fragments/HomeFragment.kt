@@ -4,26 +4,25 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentHostCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubesearch.adapters.YoutubeSearchAdapter
-import com.example.youtubesearch.models.ErrorModel
-import com.example.youtubesearch.models.ResponseModel
 import com.example.youtubesearch.models.VideoModel
 import com.example.youtubesearch.network.APIClient
 import com.example.youtubesearch.network.APIClient.API_KEY
 import com.youtubesearch.R
 import com.youtubesearch.databinding.FragmentHomeBinding
-import okhttp3.internal.notify
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.regex.Pattern
 
 
 class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
@@ -65,37 +64,53 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
                 APIClient.instance.searchVideo(
                     API_KEY,
                     word
-                ).enqueue(object : Callback<ResponseModel> {
+                ).enqueue(object : Callback<ResponseBody> {
+//                    override fun onResponse(
+//                        call: Call<ResponseModel>,
+//                        response: Response<ResponseModel>
+//                    ) {
+//
+//                        if (response.isSuccessful) {
+//                            val mResponseModel: ResponseModel? = response.body()
+//                            if (mResponseModel != null) {
+//                                val mErrorModel: ErrorModel? = mResponseModel.error
+//                                if (mErrorModel != null) {
+//                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
+//                                        .show()
+//                                } else {
+//                                    mVideoModelList.addAll(mResponseModel.items)
+//                                    setAdapter(mVideoModelList)
+//                                }
+//
+//                            } else {
+//                                Toast.makeText(
+//                                    it,
+//                                    getString(R.string.text_string_no_data_found),
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }
+//                    }
+
+
+                    //                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+//                        Toast.makeText(it, t.message, Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
                     override fun onResponse(
-                        call: Call<ResponseModel>,
-                        response: Response<ResponseModel>
+                        call: Call<ResponseBody>,
+                        response: Response<ResponseBody>
                     ) {
-
                         if (response.isSuccessful) {
-                            val mResponseModel: ResponseModel? = response.body()
-                            if (mResponseModel != null) {
-                                val mErrorModel: ErrorModel? = mResponseModel.error
-                                if (mErrorModel != null) {
-                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
-                                        .show()
-                                } else {
-                                    mVideoModelList.addAll(mResponseModel.items)
-                                    setAdapter(mVideoModelList)
-                                }
+                            val responseJsonObject = response.body()?.string()
+                            parseModels(responseJsonObject)
+//                            mVideoModelList.addAll(parseModels(responseJsonObject))
 
-                            } else {
-                                Toast.makeText(
-                                    it,
-                                    getString(R.string.text_string_no_data_found),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
                         }
                     }
 
-                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
-                        Toast.makeText(it, t.message, Toast.LENGTH_SHORT)
-                            .show()
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
                     }
                 })
             }
@@ -182,3 +197,15 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
         }
     }
 }
+
+    fun parseModels(response: String?) {
+
+        val pattern = Regex("""^.*"items":\s*\[(.*)\].*$""")
+        val result = pattern.find(response.toString())?.groupValues?.get(1)
+        Log.i("TAGresult", "$result + $response")
+//        val patternUrl = """https://i.ytimg.com/vi/\w+/hqdefault.jpg"""
+//        val url = Regex(patternUrl).find(response.toString())?.value
+//
+//        val patternId = """"videoId":\s*"(\w+)"""
+//        val videoId = Regex(pattern).find(response.toString())?.groupValues?.get(1)
+    }
