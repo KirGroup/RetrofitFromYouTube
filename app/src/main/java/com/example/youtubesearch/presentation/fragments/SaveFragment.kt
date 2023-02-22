@@ -13,7 +13,6 @@ class SaveFragment : Fragment() {
 
     private lateinit var binding: FragmentSaveBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,5 +20,4 @@ class SaveFragment : Fragment() {
         binding = FragmentSaveBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 }

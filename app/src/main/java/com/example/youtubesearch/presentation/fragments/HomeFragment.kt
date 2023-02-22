@@ -12,13 +12,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.youtubesearch.presentation.adapters.YoutubeSearchAdapter
-import com.example.youtubesearch.data.database.VideosDataBase
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.presentation.MainViewModel
+import com.example.youtubesearch.presentation.adapters.YoutubeSearchAdapter
 import com.youtubesearch.R
 import com.youtubesearch.databinding.FragmentHomeBinding
-
 
 class HomeFragment : Fragment() {
 
@@ -31,10 +29,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
-    var mSearchWord: String = ""
+    var searchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
-
-    private lateinit var dbVideos: VideosDataBase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,8 +39,8 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         mConstraintLayoutHome = binding.constraintLayoutHome
-        recyclerViewHome = binding.recyclerViewHome
 
+        recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         return binding.root
@@ -52,7 +48,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         setHasOptionsMenu(true)
@@ -65,13 +60,18 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun setAdapter(searchVideosList: List<VideoModel>) {
+    private fun setAdapter(searchVideosList: List<VideoModel>) {
         context?.let {
             youtubeSearchAdapter = YoutubeSearchAdapter(
                 it
             )
             recyclerViewHome.adapter = youtubeSearchAdapter
             youtubeSearchAdapter.submitList(searchVideosList)
+            youtubeSearchAdapter.onItemClickListener = {
+                val showVideoFragment = ShowVideoFragment()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.showFragment, showVideoFragment)?.commit()
+            }
         }
     }
 
@@ -82,37 +82,36 @@ class HomeFragment : Fragment() {
 
         val mMenuItem: MenuItem = menu.findItem(R.id.action_search)
 
-        val mSearchView: androidx.appcompat.widget.SearchView =
+        val searchView: androidx.appcompat.widget.SearchView =
             mMenuItem.actionView as androidx.appcompat.widget.SearchView
-        mSearchView.queryHint = getString(R.string.text_string_search_youtune_videos)
-        mSearchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
+        searchView.queryHint = getString(R.string.text_string_search_youtune_videos)
+        searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
 
-        mSearchView.setOnQueryTextListener(object :
+        searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                mSearchWord = query.toString()
+                searchWord = query.toString()
 
                 val imm: InputMethodManager? =
                     activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.hideSoftInputFromWindow(mConstraintLayoutHome.getWindowToken(), 0)
 
                 if (isNetworkConnected()) {
-                    getSearchResult(mSearchWord)
+                    getSearchResult(searchWord)
                 } else {
                     Toast.makeText(
                         context,
                         getString(R.string.text_string_please_check_network),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                mSearchWord = newText.toString()
+                searchWord = newText.toString()
                 if (isNetworkConnected()) {
-                        getSearchResult(mSearchWord)
+                    getSearchResult(searchWord)
                 } else {
                     Toast.makeText(
                         context,
@@ -122,7 +121,6 @@ class HomeFragment : Fragment() {
                 }
                 return true
             }
-
         })
     }
 

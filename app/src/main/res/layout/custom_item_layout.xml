@@ -12,6 +12,19 @@
         android:padding="@dimen/material_dimen_ldpi">
 
         <ImageView
+            android:id="@+id/btnPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play_arrow"
+            android:elevation="@dimen/material_dimen_small_hdpi"
+            android:padding="@dimen/material_dimen_small_hdpi"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="@id/imageviewCustomItemLayout"
+            app:layout_constraintTop_toTopOf="@id/imageviewCustomItemLayout"
+            app:layout_constraintEnd_toEndOf="@id/imageviewCustomItemLayout"
+            app:layout_constraintBottom_toBottomOf="@id/imageviewCustomItemLayout"/>
+
+        <ImageView
             android:id="@+id/imageviewCustomItemLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"

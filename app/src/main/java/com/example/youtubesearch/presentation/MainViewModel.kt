@@ -23,16 +23,16 @@ class MainViewModel: ViewModel() {
     private val _videoModelList: MutableLiveData<List<VideoModel>> = MutableLiveData()
     val videoModelList: LiveData<List<VideoModel>> = _videoModelList
 
-    suspend fun insertVideo(listVideos: List<VideoModel>, context: Context){
-        insertVideo.insertVideos(listVideos, context)
+    suspend fun insertVideo(videoModel: VideoModel, context: Context){
+        insertVideo.insertVideos(videoModel, context)
     }
 
     fun getSearchResult(word: String, context: Context){
         _videoModelList.postValue(getSearchResult.getSearchResult(word, context))
     }
 
-    fun getVideoList(){
-
+    suspend fun getVideoList(){
+        getVideoListUseCase.getVideoList()
     }
 
     suspend fun clearVideos(){

@@ -20,14 +20,14 @@ object VideoListRepositoryImpl: VideoListRepository {
     private var mVideoModelList: MutableList<VideoModel> = mutableListOf()
 
 
-    override suspend fun insertVideo(listVideos: List<VideoModel>, context: Context) {
+    override suspend fun insertVideo(videoModel: VideoModel, context: Context) {
         dbVideos = Room.databaseBuilder(
             context.applicationContext,
             VideosDataBase::class.java,
             VideosDataBase.NAME_DATABASE
         ).fallbackToDestructiveMigration().allowMainThreadQueries()
             .build()
-        dbVideos.daoVideos.insertVideos(listVideos)
+        dbVideos.daoVideos.insertVideos(videoModel)
     }
 
     override fun getSearchResult(word: String, context: Context): List<VideoModel> {
@@ -73,8 +73,8 @@ object VideoListRepositoryImpl: VideoListRepository {
         return mVideoModelList
     }
 
-    override fun getVideoList(): List<VideoModel> {
-        TODO("Not yet implemented")
+    override suspend fun getVideoList(): List<VideoModel> {
+        return dbVideos.daoVideos.getVideos()
     }
 
     override suspend fun clearVideos() {

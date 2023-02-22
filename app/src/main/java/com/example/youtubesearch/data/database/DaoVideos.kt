@@ -9,7 +9,7 @@ import com.example.youtubesearch.domain.models.VideoModel
 @Dao
 interface DaoVideos {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVideos(listVideos: List<VideoModel>)
+    suspend fun insertVideos(videoModel: VideoModel)
 
     @Query("DELETE FROM VideoModelEntity")
     suspend fun clearVideos()

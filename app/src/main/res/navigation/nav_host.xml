@@ -11,4 +11,9 @@
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
 
+    <fragment
+        android:id="@+id/showVideoFragment"
+        android:name="com.example.youtubesearch.presentation.fragments.ShowVideoFragment"
+        android:label="fragment_show"
+        tools:layout="@layout/fragment_show_video" />
 </navigation>

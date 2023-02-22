@@ -17,4 +17,9 @@
         android:label="fragment_save"
         tools:layout="@layout/fragment_save" />
 
+    <fragment
+        android:id="@+id/showVideoFragment"
+        android:name="com.example.youtubesearch.presentation.fragments.ShowVideoFragment"
+        android:label="fragment_show"
+        tools:layout="@layout/fragment_show_video" />
 </navigation>

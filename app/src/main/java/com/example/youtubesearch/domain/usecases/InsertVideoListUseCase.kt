@@ -5,7 +5,7 @@ import com.example.youtubesearch.domain.models.VideoModel
 
 class InsertVideoListUseCase(private val videoListRepository: VideoListRepository) {
 
-    suspend fun insertVideos(listVideos: List<VideoModel>, context: Context) {
-        return videoListRepository.insertVideo(listVideos, context)
+    suspend fun insertVideos(videoModel: VideoModel, context: Context) {
+        return videoListRepository.insertVideo(videoModel, context)
     }
 }
