@@ -10,9 +10,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentHostCallback
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.youtubesearch.adapters.YoutubeSearchAdapter
+import com.example.youtubesearch.local.VideosDataBase
+import com.example.youtubesearch.local.VideosDataBase.Companion.NAME_DATABASE
 import com.example.youtubesearch.models.ErrorModel
 import com.example.youtubesearch.models.ResponseModel
 import com.example.youtubesearch.models.VideoModel
@@ -20,13 +23,12 @@ import com.example.youtubesearch.network.APIClient
 import com.example.youtubesearch.network.APIClient.API_KEY
 import com.youtubesearch.R
 import com.youtubesearch.databinding.FragmentHomeBinding
-import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
+class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -39,6 +41,8 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
 
     var mSearchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
+
+    private lateinit var dbVideos: VideosDataBase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +61,18 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         setHasOptionsMenu(true)
+
+        dbVideos = initDB()
     }
+
+    private fun initDB(): VideosDataBase =
+        Room.databaseBuilder(
+            requireContext().applicationContext,
+            VideosDataBase::class.java,
+            NAME_DATABASE
+        ).fallbackToDestructiveMigration().allowMainThreadQueries()
+            .build()
+
 
     fun getSearchResult(word: String) {
         if (!word.equals("")) {
@@ -79,8 +94,11 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
                                     Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
                                         .show()
                                 } else {
-                                    mVideoModelList.addAll(mResponseModel.items)
-                                    setAdapter(mVideoModelList)
+                                    lifecycleScope.launchWhenStarted {
+                                        mVideoModelList.addAll(mResponseModel.items)
+                                        dbVideos.daoVideos.insertVideos(mVideoModelList)
+                                        setAdapter(mVideoModelList)
+                                    }
                                 }
 
                             } else {
@@ -173,8 +191,8 @@ class HomeFragment : Fragment(/*R.layout.fragment_home*/) {
 
     fun isNetworkConnected(): Boolean {
         if (
-            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).state == NetworkInfo.State.CONNECTED ||
-            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).state == NetworkInfo.State.CONNECTED
+            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)?.state == NetworkInfo.State.CONNECTED ||
+            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)?.state == NetworkInfo.State.CONNECTED
         ) {
             return true
         } else {

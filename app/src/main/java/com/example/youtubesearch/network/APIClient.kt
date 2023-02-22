@@ -1,6 +1,7 @@
 package com.example.youtubesearch.network
 
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -21,7 +22,11 @@ object APIClient {
 
             val request = requestBuilder.build()
             chain.proceed(request)
-        }.build()
+        }
+        .addInterceptor(
+            HttpLoggingInterceptor()
+                .setLevel(level = HttpLoggingInterceptor.Level.BODY)
+        ).build()
 
     val instance: APIInterface by lazy {
         val retrofit = Retrofit.Builder()
