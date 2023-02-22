@@ -4,13 +4,17 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.presentation.MainViewModel
@@ -38,11 +42,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        mConstraintLayoutHome = binding.constraintLayoutHome
-
-        recyclerViewHome = binding.recyclerViewHome
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
         return binding.root
     }
 
@@ -51,6 +50,11 @@ class HomeFragment : Fragment() {
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         setHasOptionsMenu(true)
+        mConstraintLayoutHome = binding.constraintLayoutHome
+
+        recyclerViewHome = binding.recyclerViewHome
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
     }
 
     fun getSearchResult(word: String) {
@@ -61,17 +65,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
-        context?.let {
-            youtubeSearchAdapter = YoutubeSearchAdapter(
-                it
-            )
-            recyclerViewHome.adapter = youtubeSearchAdapter
-            youtubeSearchAdapter.submitList(searchVideosList)
-            youtubeSearchAdapter.onItemClickListener = {
-                val showVideoFragment = ShowVideoFragment()
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.showFragment, showVideoFragment)?.commit()
-            }
+        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
+        recyclerViewHome.adapter = youtubeSearchAdapter
+        youtubeSearchAdapter.submitList(searchVideosList)
+
+        youtubeSearchAdapter.onItemClickListener = {
+            val bundle = bundleOf("url" to it.snippet.thumbnails.medium.url)
+            findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
         }
     }
 
