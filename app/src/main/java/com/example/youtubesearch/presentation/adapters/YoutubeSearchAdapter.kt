@@ -1,11 +1,11 @@
-package com.example.youtubesearch.adapters
+package com.example.youtubesearch.presentation.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import com.example.youtubesearch.adapters.holder.MyViewHolder
-import com.example.youtubesearch.models.VideoModel
+import com.example.youtubesearch.presentation.adapters.holder.MyViewHolder
+import com.example.youtubesearch.domain.models.VideoModel
 import com.youtubesearch.R
 import com.youtubesearch.databinding.CustomItemLayoutBinding
 import androidx.recyclerview.widget.ListAdapter as ListAdapterCards

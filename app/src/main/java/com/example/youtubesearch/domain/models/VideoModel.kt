@@ -1,4 +1,4 @@
-package com.example.youtubesearch.models
+package com.example.youtubesearch.domain.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

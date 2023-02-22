@@ -1,4 +1,4 @@
-package com.example.youtubesearch.activities
+package com.example.youtubesearch.presentation.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

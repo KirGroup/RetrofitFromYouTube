@@ -1,4 +1,4 @@
-package com.example.youtubesearch.adapters.holder
+package com.example.youtubesearch.presentation.adapters.holder
 
 import android.view.View
 import android.widget.ImageView

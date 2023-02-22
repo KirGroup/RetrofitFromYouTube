@@ -1,10 +1,10 @@
-package com.example.youtubesearch.local
+package com.example.youtubesearch.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.youtubesearch.models.VideoModel
+import com.example.youtubesearch.domain.models.VideoModel
 
 @Dao
 interface DaoVideos {

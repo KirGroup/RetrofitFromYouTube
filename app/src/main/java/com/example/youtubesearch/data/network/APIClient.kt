@@ -1,4 +1,4 @@
-package com.example.youtubesearch.network
+package com.example.youtubesearch.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

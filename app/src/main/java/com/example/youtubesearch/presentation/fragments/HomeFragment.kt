@@ -1,4 +1,4 @@
-package com.example.youtubesearch.fragments
+package com.example.youtubesearch.presentation.fragments
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -10,22 +10,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.youtubesearch.adapters.YoutubeSearchAdapter
-import com.example.youtubesearch.local.VideosDataBase
-import com.example.youtubesearch.local.VideosDataBase.Companion.NAME_DATABASE
-import com.example.youtubesearch.models.ErrorModel
-import com.example.youtubesearch.models.ResponseModel
-import com.example.youtubesearch.models.VideoModel
-import com.example.youtubesearch.network.APIClient
-import com.example.youtubesearch.network.APIClient.API_KEY
+import com.example.youtubesearch.presentation.adapters.YoutubeSearchAdapter
+import com.example.youtubesearch.data.database.VideosDataBase
+import com.example.youtubesearch.domain.models.VideoModel
+import com.example.youtubesearch.presentation.MainViewModel
 import com.youtubesearch.R
 import com.youtubesearch.databinding.FragmentHomeBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class HomeFragment : Fragment() {
@@ -34,10 +26,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var mConstraintLayoutHome: ConstraintLayout
 
-    private lateinit var mYoutubeSearchAdapter: YoutubeSearchAdapter
-    private lateinit var mRecyclerViewHome: RecyclerView
+    private lateinit var youtubeSearchAdapter: YoutubeSearchAdapter
+    private lateinit var recyclerViewHome: RecyclerView
 
-    private var mVideoModelList: ArrayList<VideoModel> = ArrayList()
+    private lateinit var viewModel: MainViewModel
 
     var mSearchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
@@ -51,7 +43,10 @@ class HomeFragment : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         mConstraintLayoutHome = binding.constraintLayoutHome
-        mRecyclerViewHome = binding.recyclerViewHome
+        recyclerViewHome = binding.recyclerViewHome
+
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
         return binding.root
     }
 
@@ -61,72 +56,22 @@ class HomeFragment : Fragment() {
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         setHasOptionsMenu(true)
-
-        dbVideos = initDB()
     }
 
-    private fun initDB(): VideosDataBase =
-        Room.databaseBuilder(
-            requireContext().applicationContext,
-            VideosDataBase::class.java,
-            NAME_DATABASE
-        ).fallbackToDestructiveMigration().allowMainThreadQueries()
-            .build()
-
-
     fun getSearchResult(word: String) {
-        if (!word.equals("")) {
-            context?.let {
-                APIClient.instance.searchVideo(
-                    API_KEY,
-                    word
-                ).enqueue(object : Callback<ResponseModel> {
-                    override fun onResponse(
-                        call: Call<ResponseModel>,
-                        response: Response<ResponseModel>
-                    ) {
-
-                        if (response.isSuccessful) {
-                            val mResponseModel: ResponseModel? = response.body()
-                            if (mResponseModel != null) {
-                                val mErrorModel: ErrorModel? = mResponseModel.error
-                                if (mErrorModel != null) {
-                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
-                                        .show()
-                                } else {
-                                    lifecycleScope.launchWhenStarted {
-                                        mVideoModelList.addAll(mResponseModel.items)
-                                        dbVideos.daoVideos.insertVideos(mVideoModelList)
-                                        setAdapter(mVideoModelList)
-                                    }
-                                }
-
-                            } else {
-                                Toast.makeText(
-                                    it,
-                                    getString(R.string.text_string_no_data_found),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
-                        Toast.makeText(it, t.message, Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                })
-            }
+        viewModel.getSearchResult(word, requireContext())
+        viewModel.videoModelList.observe(viewLifecycleOwner) {
+            setAdapter(it)
         }
     }
 
-    fun setAdapter(mSearchaVideosList: ArrayList<VideoModel>) {
+    fun setAdapter(searchVideosList: List<VideoModel>) {
         context?.let {
-            mYoutubeSearchAdapter = YoutubeSearchAdapter(
+            youtubeSearchAdapter = YoutubeSearchAdapter(
                 it
             )
-            mRecyclerViewHome.adapter = mYoutubeSearchAdapter
-            mYoutubeSearchAdapter.submitList(mSearchaVideosList)
+            recyclerViewHome.adapter = youtubeSearchAdapter
+            youtubeSearchAdapter.submitList(searchVideosList)
         }
     }
 
@@ -167,21 +112,13 @@ class HomeFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 mSearchWord = newText.toString()
                 if (isNetworkConnected()) {
-                    if (mSearchWord.length >= 3) {
                         getSearchResult(mSearchWord)
-                    } else {
-                        context?.let {
-                            mVideoModelList.clear()
-                            setAdapter(mVideoModelList)
-                        }
-                    }
                 } else {
                     Toast.makeText(
                         context,
                         getString(R.string.text_string_please_check_network),
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
                 }
                 return true
             }

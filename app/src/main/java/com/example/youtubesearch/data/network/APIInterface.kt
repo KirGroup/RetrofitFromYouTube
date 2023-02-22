@@ -1,9 +1,9 @@
-package com.example.youtubesearch.network
+package com.example.youtubesearch.data.network
 
-import com.example.youtubesearch.models.ResponseModel
-import com.example.youtubesearch.network.APIClient.SCH
-import com.example.youtubesearch.network.APIClient.mx
-import com.example.youtubesearch.network.APIClient.part
+import com.example.youtubesearch.domain.models.ResponseModel
+import com.example.youtubesearch.data.network.APIClient.SCH
+import com.example.youtubesearch.data.network.APIClient.mx
+import com.example.youtubesearch.data.network.APIClient.part
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

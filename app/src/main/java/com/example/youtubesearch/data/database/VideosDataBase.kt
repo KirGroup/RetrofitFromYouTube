@@ -1,10 +1,10 @@
-package com.example.youtubesearch.local
+package com.example.youtubesearch.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.youtubesearch.models.DaoConverter
-import com.example.youtubesearch.models.VideoModel
+import com.example.youtubesearch.domain.models.DaoConverter
+import com.example.youtubesearch.domain.models.VideoModel
 
 @Database(
     entities = [

@@ -1,4 +1,4 @@
-package com.example.youtubesearch.fragments
+package com.example.youtubesearch.presentation.fragments
 
 import android.os.Bundle
 import android.util.Log
