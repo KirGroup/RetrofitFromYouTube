@@ -10,5 +10,5 @@ class SnippetModel(
     @field:Json(name = "description")
     var description: String,
     @field:Json(name = "thumbnails")
-    var thumbnails: ThumbnailModel,
+    var thumbnails: ThumbnailModel
 )

@@ -3,19 +3,22 @@ package com.example.youtubesearch.models
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 import com.squareup.moshi.Json
 
 @Entity(tableName = "VideoModelEntity")
  data class VideoModel(
     @PrimaryKey
+//    @TypeConverters(DaoConverter::class)
     @field:Json(name = "id")
     var id: VideoIDModel,
+//    @TypeConverters(DaoConverter::class)
     @field:Json(name = "snippet")
     var snippet: SnippetModel
 )
 
 class DaoConverter {
-   companion object {
+
       @TypeConverter
       fun idToString(videoIDModel: VideoIDModel): String =
          videoIDModel.videoId
@@ -32,5 +35,5 @@ class DaoConverter {
       @TypeConverter
       fun stringToSnippet(id: String): SnippetModel =
          SnippetModel("", id.split(":")[0], "", ThumbnailModel(MediumModel(id.split(":")[1])))
-   }
+
 }
