@@ -4,15 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -33,8 +32,14 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
 
+    private lateinit var searchView: SearchView
     var searchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,19 +54,18 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mConnectivityManager =
             context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        setHasOptionsMenu(true)
         mConstraintLayoutHome = binding.constraintLayoutHome
 
         recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
+        viewModel.videoModelList.observe(viewLifecycleOwner) {
+            setAdapter(it)
+        }
     }
 
     fun getSearchResult(word: String) {
         viewModel.getSearchResult(word, requireContext())
-        viewModel.videoModelList.observe(viewLifecycleOwner) {
-            setAdapter(it)
-        }
+
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
@@ -82,13 +86,15 @@ class HomeFragment : Fragment() {
 
         val mMenuItem: MenuItem = menu.findItem(R.id.action_search)
 
-        val searchView: androidx.appcompat.widget.SearchView =
-            mMenuItem.actionView as androidx.appcompat.widget.SearchView
+        searchView = mMenuItem.actionView as SearchView
         searchView.queryHint = getString(R.string.text_string_search_youtune_videos)
         searchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
+        searchVideos()
+    }
 
+    fun searchVideos() {
         searchView.setOnQueryTextListener(object :
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchWord = query.toString()
 

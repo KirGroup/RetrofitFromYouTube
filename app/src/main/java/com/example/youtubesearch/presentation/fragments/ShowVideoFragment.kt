@@ -2,6 +2,7 @@ package com.example.youtubesearch.presentation.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,8 @@ class ShowVideoFragment : Fragment() {
     private fun startWebView(){
         binding.webView.webViewClient = WebViewClient()
         binding.webView.apply {
-            arguments?.getString("url")?.let { loadUrl(it) }
             settings.javaScriptEnabled = true
+            arguments?.getString("url")?.let { loadUrl(it) }
         }
 
     }
