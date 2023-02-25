@@ -9,10 +9,9 @@ import com.squareup.moshi.Json
 @Entity(tableName = "VideoModelEntity")
  data class VideoModel(
     @PrimaryKey
-//    @TypeConverters(DaoConverter::class)
     @field:Json(name = "id")
     var id: VideoIDModel,
-//    @TypeConverters(DaoConverter::class)
+
     @field:Json(name = "snippet")
     var snippet: SnippetModel
 )

@@ -12,7 +12,6 @@ object APIClient {
     const val SCH = "search?"
     const val mx = "&maxResults=20"
 
-
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->
             val original = chain.request()

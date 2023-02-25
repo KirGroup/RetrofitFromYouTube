@@ -1,6 +1,7 @@
 package com.example.youtubesearch.data
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.room.Room
 import com.example.youtubesearch.data.database.VideosDataBase
@@ -31,9 +32,10 @@ object VideoListRepositoryImpl: VideoListRepository {
     }
 
     override fun getSearchResult(word: String, context: Context): List<VideoModel> {
-        if (!word.equals("")) {
 
-                APIClient.instance.searchVideo(
+        if (word.isNotEmpty()) {
+            Log.d("fromApi", "word in Repository $word")
+            APIClient.instance.searchVideo(
                     APIClient.API_KEY,
                     word
                 ).enqueue(object : Callback<ResponseModel> {
@@ -41,7 +43,7 @@ object VideoListRepositoryImpl: VideoListRepository {
                         call: Call<ResponseModel>,
                         response: Response<ResponseModel>
                     ) {
-
+                        Log.d("fromApi", "${response.body()}")
                         if (response.isSuccessful) {
                             val mResponseModel: ResponseModel? = response.body()
                             if (mResponseModel != null) {

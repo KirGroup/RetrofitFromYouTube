@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -58,13 +59,20 @@ class HomeFragment : Fragment() {
 
         recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
+        recyclerViewHome.adapter = youtubeSearchAdapter
+
         viewModel.videoModelList.observe(viewLifecycleOwner) {
-            setAdapter(it)
+            youtubeSearchAdapter.submitList(it)
+
+//            Log.d("fromApi", "In HomeFragment ${it.get(0).id.videoId}")
+
         }
     }
 
     fun getSearchResult(word: String) {
         viewModel.getSearchResult(word, requireContext())
+        Log.d("fromApi", "word in HomeFragment $word")
 
     }
 
@@ -111,13 +119,13 @@ class HomeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 searchWord = newText.toString()
                 if (isNetworkConnected()) {
-                    getSearchResult(searchWord)
+//                    getSearchResult(searchWord)
                 } else {
                     Toast.makeText(
                         context,
@@ -127,6 +135,7 @@ class HomeFragment : Fragment() {
                 }
                 return true
             }
+
         })
     }
 
