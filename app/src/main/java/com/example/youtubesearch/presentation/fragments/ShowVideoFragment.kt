@@ -29,7 +29,9 @@ class ShowVideoFragment : Fragment() {
         binding.webView.webViewClient = WebViewClient()
         binding.webView.apply {
             settings.javaScriptEnabled = true
-            arguments?.getString("url")?.let { loadUrl("https://www.youtube.com/watch?v=$it") }
+            arguments?.getString("videoId")?.let { loadUrl("https://www.youtube.com/watch?v=$it")
+                Log.d("startWebView", it)
+            }
         }
 
     }

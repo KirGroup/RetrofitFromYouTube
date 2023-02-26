@@ -37,6 +37,8 @@ class HomeFragment : Fragment() {
     var searchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
 
+    private var listVideos: List<VideoModel> = listOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -60,14 +62,20 @@ class HomeFragment : Fragment() {
         recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
+        recyclerViewHome.adapter = youtubeSearchAdapter
+        youtubeSearchAdapter.onItemClickListener = {
+            val bundle = bundleOf("url" to it.snippet.thumbnails.medium.url)
+            findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
+        }
+
         viewModel.videoModelList.observe(viewLifecycleOwner) {
             setAdapter(it)
 //            Log.d("fromApi", "observe: ${it[0].id.videoId}")
         }
     }
 
-
-    fun getSearchResult(word: String) {
+     fun getSearchResult(word: String) {
         viewModel.getSearchResult(word, requireContext())
         Log.d("fromApi", "word in HomeFragment $word")
     }
@@ -75,9 +83,8 @@ class HomeFragment : Fragment() {
     private fun setAdapter(searchVideosList: List<VideoModel>) {
         youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
         recyclerViewHome.adapter = youtubeSearchAdapter
-        youtubeSearchAdapter.submitList(ArrayList(searchVideosList))
         youtubeSearchAdapter.onItemClickListener = {
-            val bundle = bundleOf("url" to it.snippet.thumbnails.medium.url)
+            val bundle = bundleOf("videoId" to it.id.videoId)
             findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
         }
     }
@@ -105,15 +112,15 @@ class HomeFragment : Fragment() {
                     activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.hideSoftInputFromWindow(mConstraintLayoutHome.getWindowToken(), 0)
 
-                if (isNetworkConnected()) {
+//                if (isNetworkConnected()) {
                     getSearchResult(searchWord)
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.text_string_please_check_network),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+//                } else {
+//                    Toast.makeText(
+//                        context,
+//                        getString(R.string.text_string_please_check_network),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
                 return true
             }
 

@@ -1,6 +1,7 @@
 package com.example.youtubesearch.presentation
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,8 +28,12 @@ class MainViewModel: ViewModel() {
         insertVideo.insertVideos(videoModel, context)
     }
 
-    fun getSearchResult(word: String, context: Context){
+     fun getSearchResult(word: String, context: Context){
         _videoModelList.postValue(getSearchResult.getSearchResult(word, context))
+
+        if(getSearchResult.getSearchResult(word, context).isNotEmpty())
+        Log.d("fromApi", "viewModel receive ${getSearchResult.getSearchResult(word, context)[0].id.videoId}")
+
     }
 
     suspend fun getVideoList(){

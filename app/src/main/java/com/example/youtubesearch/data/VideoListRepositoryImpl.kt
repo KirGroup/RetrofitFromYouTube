@@ -52,6 +52,7 @@ object VideoListRepositoryImpl: VideoListRepository {
 //                                        .show()
                                 } else {
                                     mVideoModelList.addAll(mResponseModel.items)
+                                    Log.d("fromApi", "repository sent: ${mResponseModel.items[0].id.videoId}")
                                 }
 
                             } else {
@@ -71,7 +72,7 @@ object VideoListRepositoryImpl: VideoListRepository {
                 })
             }
 
-        return mVideoModelList
+        return mVideoModelList.toList()
     }
 
     override suspend fun getVideoList(): List<VideoModel> {
