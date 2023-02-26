@@ -5,10 +5,12 @@ import com.example.youtubesearch.domain.models.VideoModel
 
 class DiffCallBack: DiffUtil.ItemCallback<VideoModel>(){
     override fun areItemsTheSame(oldItem: VideoModel, newItem: VideoModel): Boolean {
-        return oldItem.id == newItem.id
+//        return oldItem.id.videoId == newItem.id.videoId
+        return false
     }
 
     override fun areContentsTheSame(oldItem: VideoModel, newItem: VideoModel): Boolean {
-        return oldItem==newItem
+//        return oldItem==newItem
+        return false
     }
 }

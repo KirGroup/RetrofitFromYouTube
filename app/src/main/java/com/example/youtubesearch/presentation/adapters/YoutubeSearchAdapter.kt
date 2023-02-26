@@ -2,6 +2,7 @@ package com.example.youtubesearch.presentation.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,7 @@ class YoutubeSearchAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
+        Log.d("fromApi", "List in adapter ${currentList[position].id.videoId}")
         holder.btnPlay.setOnClickListener {
 //                MainViewModel().insertVideo(getItem(position), mContext)
             onItemClickListener?.invoke(getItem(position))

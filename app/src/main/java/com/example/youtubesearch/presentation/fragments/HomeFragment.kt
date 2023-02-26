@@ -59,28 +59,23 @@ class HomeFragment : Fragment() {
 
         recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
-        recyclerViewHome.adapter = youtubeSearchAdapter
 
         viewModel.videoModelList.observe(viewLifecycleOwner) {
-            youtubeSearchAdapter.submitList(it)
-
-//            Log.d("fromApi", "In HomeFragment ${it.get(0).id.videoId}")
-
+            setAdapter(it)
+//            Log.d("fromApi", "observe: ${it[0].id.videoId}")
         }
     }
+
 
     fun getSearchResult(word: String) {
         viewModel.getSearchResult(word, requireContext())
         Log.d("fromApi", "word in HomeFragment $word")
-
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
         youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
         recyclerViewHome.adapter = youtubeSearchAdapter
-        youtubeSearchAdapter.submitList(searchVideosList)
-
+        youtubeSearchAdapter.submitList(ArrayList(searchVideosList))
         youtubeSearchAdapter.onItemClickListener = {
             val bundle = bundleOf("url" to it.snippet.thumbnails.medium.url)
             findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
@@ -123,16 +118,16 @@ class HomeFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchWord = newText.toString()
-                if (isNetworkConnected()) {
+//                searchWord = newText.toString()
+//                if (isNetworkConnected()) {
 //                    getSearchResult(searchWord)
-                } else {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.text_string_please_check_network),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+//                } else {
+//                    Toast.makeText(
+//                        context,
+//                        getString(R.string.text_string_please_check_network),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
                 return true
             }
 

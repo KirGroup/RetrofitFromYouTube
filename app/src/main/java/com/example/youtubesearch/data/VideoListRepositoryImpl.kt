@@ -43,7 +43,6 @@ object VideoListRepositoryImpl: VideoListRepository {
                         call: Call<ResponseModel>,
                         response: Response<ResponseModel>
                     ) {
-                        Log.d("fromApi", "${response.body()}")
                         if (response.isSuccessful) {
                             val mResponseModel: ResponseModel? = response.body()
                             if (mResponseModel != null) {

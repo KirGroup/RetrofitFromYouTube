@@ -19,5 +19,5 @@ interface DaoVideos {
     suspend fun clearVideos()
 
     @Query("SELECT*FROM VideoModelEntity")
-    suspend fun getVideos():LiveData<List<VideoModel>>
+    suspend fun getVideos():List<VideoModel>
 }
