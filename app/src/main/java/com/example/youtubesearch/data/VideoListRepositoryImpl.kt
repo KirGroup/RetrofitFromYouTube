@@ -20,7 +20,6 @@ object VideoListRepositoryImpl : VideoListRepository {
     private lateinit var dbVideos: VideosDataBase
     private var mVideoModelList: MutableList<VideoModel> = mutableListOf()
 
-
     override suspend fun insertVideo(videoModel: VideoModel, context: Context) {
         dbVideos = Room.databaseBuilder(
             context.applicationContext,
@@ -31,7 +30,7 @@ object VideoListRepositoryImpl : VideoListRepository {
         dbVideos.daoVideos.insertVideos(videoModel)
     }
 
-    override suspend fun getSearchResult(word: String, context: Context): List<VideoModel> {
+    override suspend fun getSearchResult(word: String): List<VideoModel> {
 
         if (word.isNotEmpty()) {
             Log.d("fromApi", "word in Repository $word")

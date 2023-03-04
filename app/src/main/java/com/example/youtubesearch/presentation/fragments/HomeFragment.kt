@@ -62,13 +62,6 @@ class HomeFragment : Fragment() {
         recyclerViewHome = binding.recyclerViewHome
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
-        recyclerViewHome.adapter = youtubeSearchAdapter
-        youtubeSearchAdapter.onItemClickListener = {
-            val bundle = bundleOf("url" to it.snippet.thumbnails.medium.url)
-            findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
-        }
-
         viewModel.videoModelList.observe(viewLifecycleOwner) {
             setAdapter(it)
             Log.d("fromApi", "observe: ${it.size}")
@@ -81,8 +74,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
-        youtubeSearchAdapter = YoutubeSearchAdapter(requireContext())
+        youtubeSearchAdapter = YoutubeSearchAdapter()
         recyclerViewHome.adapter = youtubeSearchAdapter
+        youtubeSearchAdapter.submitList(searchVideosList)
         youtubeSearchAdapter.onItemClickListener = {
             val bundle = bundleOf("videoId" to it.id.videoId)
             findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)

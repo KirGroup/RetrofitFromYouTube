@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardViewCustomItemLayout"
     android:layout_width="match_parent"
@@ -15,25 +16,25 @@
             android:id="@+id/btnPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_arrow"
             android:elevation="@dimen/material_dimen_small_hdpi"
-            android:padding="@dimen/material_dimen_small_hdpi"
             android:focusable="true"
-            app:layout_constraintStart_toStartOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintTop_toTopOf="@id/imageviewCustomItemLayout"
+            android:padding="@dimen/material_dimen_small_hdpi"
+            android:src="@drawable/ic_play_arrow"
+            app:layout_constraintBottom_toBottomOf="@id/imageviewCustomItemLayout"
             app:layout_constraintEnd_toEndOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintBottom_toBottomOf="@id/imageviewCustomItemLayout"/>
+            app:layout_constraintStart_toStartOf="@id/imageviewCustomItemLayout"
+            app:layout_constraintTop_toTopOf="@id/imageviewCustomItemLayout" />
 
         <ImageView
             android:id="@+id/imageviewCustomItemLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/splash_theme"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="4:2"
-            app:layout_constraintEnd_toStartOf="@id/textviewCustomItemLayoutHeading"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/textviewCustomItemLayoutHeading"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -41,13 +42,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="@string/app_name"
-            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toEndOf="@id/imageviewCustomItemLayout"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,11 +58,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
+            android:ellipsize="end"
             android:maxLines="1"
             android:text="@string/app_name"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            android:ellipsize="end"
             app:layout_constraintBottom_toTopOf="@id/textviewCustomItemLayoutViews"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="3"
@@ -73,17 +74,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="3"
             android:ellipsize="end"
+            android:maxLines="1"
             android:text="@string/app_name"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            android:maxLines="1"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="3"
             app:layout_constraintStart_toEndOf="@id/imageviewCustomItemLayout"
             app:layout_constraintTop_toBottomOf="@id/textviewCustomItemLayoutChannel" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</FrameLayout>

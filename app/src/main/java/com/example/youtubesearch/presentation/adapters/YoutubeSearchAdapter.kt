@@ -13,15 +13,15 @@ import com.youtubesearch.R
 import com.youtubesearch.databinding.CustomItemLayoutBinding
 import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
 
-class YoutubeSearchAdapter(
-    var mContext: Context
-) : ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
+class YoutubeSearchAdapter: ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
 
     var onItemClickListener: ((VideoModel) -> Unit)? = null
+    private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        context = parent.context
         return MyViewHolder(
-            CustomItemLayoutBinding.inflate(LayoutInflater.from(parent.context))
+            CustomItemLayoutBinding.inflate(LayoutInflater.from(context))
         )
     }
 
@@ -32,7 +32,7 @@ class YoutubeSearchAdapter(
             onItemClickListener?.invoke(getItem(position))
         }
 
-        Glide.with(mContext).load(getItem(position).snippet.thumbnails.medium.url)
+        Glide.with(context).load(getItem(position).snippet.thumbnails.medium.url)
             .placeholder(R.drawable.splash_theme)
             .into(holder.imageViewThumbnail)
         holder.textViewTitle.text = getItem(position).snippet.title
