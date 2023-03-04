@@ -71,13 +71,13 @@ class HomeFragment : Fragment() {
 
         viewModel.videoModelList.observe(viewLifecycleOwner) {
             setAdapter(it)
-//            Log.d("fromApi", "observe: ${it[0].id.videoId}")
+            Log.d("fromApi", "observe: ${it.size}")
         }
     }
 
      fun getSearchResult(word: String) {
-        viewModel.getSearchResult(word, requireContext())
-        Log.d("fromApi", "word in HomeFragment $word")
+         Log.d("fromApi", "word in HomeFragment $word")
+         viewModel.getSearchResult(word, requireContext())
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {

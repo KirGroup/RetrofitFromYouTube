@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-object VideoListRepositoryImpl: VideoListRepository {
+object VideoListRepositoryImpl : VideoListRepository {
 
     private lateinit var dbVideos: VideosDataBase
     private var mVideoModelList: MutableList<VideoModel> = mutableListOf()
@@ -31,48 +31,73 @@ object VideoListRepositoryImpl: VideoListRepository {
         dbVideos.daoVideos.insertVideos(videoModel)
     }
 
-    override fun getSearchResult(word: String, context: Context): List<VideoModel> {
+    override suspend fun getSearchResult(word: String, context: Context): List<VideoModel> {
 
         if (word.isNotEmpty()) {
             Log.d("fromApi", "word in Repository $word")
-            APIClient.instance.searchVideo(
-                    APIClient.API_KEY,
-                    word
-                ).enqueue(object : Callback<ResponseModel> {
-                    override fun onResponse(
-                        call: Call<ResponseModel>,
-                        response: Response<ResponseModel>
-                    ) {
-                        if (response.isSuccessful) {
-                            val mResponseModel: ResponseModel? = response.body()
-                            if (mResponseModel != null) {
-                                val mErrorModel: ErrorModel = mResponseModel.error
-                                if (mErrorModel != null) {
+
+            val response = APIClient.instance.searchVideo(
+                APIClient.API_KEY,
+                word
+            ).execute()
+
+            if (response.isSuccessful) {
+                val mResponseModel: ResponseModel? = response.body()
+                if (mResponseModel != null) {
+                    val mErrorModel: ErrorModel = mResponseModel.error
+                    if (mErrorModel != null) {
 //                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
 //                                        .show()
-                                } else {
-                                    mVideoModelList.addAll(mResponseModel.items)
-                                    Log.d("fromApi", "repository sent: ${mResponseModel.items[0].id.videoId}")
-                                }
+                        throw IllegalStateException()
+                    } else {
+                        Log.d("fromApi", "repository sent: ${mResponseModel.items[0].id.videoId}")
+                        return mResponseModel.items
+                    }
 
-                            } else {
+                } else {
+                    throw IllegalStateException()
 //                                Toast.makeText(
 //                                    it,
 //                                    context.getString(R.string.text_string_no_data_found),
 //                                    Toast.LENGTH_SHORT
 //                                ).show()
-                            }
-                        }
-                    }
 
-                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
-//                        Toast.makeText(it, t.message, Toast.LENGTH_SHORT)
-//                            .show()
-                    }
-                })
+                }
             }
-
-        return mVideoModelList.toList()
+//                    override fun onResponse(
+//                        call: Call<ResponseModel>,
+//                        response: Response<ResponseModel>
+//                    ) {
+//                        if (response.isSuccessful) {
+//                            val mResponseModel: ResponseModel? = response.body()
+//                            if (mResponseModel != null) {
+//                                val mErrorModel: ErrorModel = mResponseModel.error
+//                                if (mErrorModel != null) {
+////                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
+////                                        .show()
+//                                } else {
+//                                    mVideoModelList.addAll(mResponseModel.items)
+//                                    Log.d("fromApi", "repository sent: ${mResponseModel.items[0].id.videoId}")
+//                                }
+//
+//                            } else {
+////                                Toast.makeText(
+////                                    it,
+////                                    context.getString(R.string.text_string_no_data_found),
+////                                    Toast.LENGTH_SHORT
+////                                ).show()
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<ResponseModel>, t: Throwable) {
+////                        Toast.makeText(it, t.message, Toast.LENGTH_SHORT)
+////                            .show()
+//                    }
+//                })
+            throw IllegalStateException()
+        }
+        return listOf()
     }
 
     override suspend fun getVideoList(): List<VideoModel> {
