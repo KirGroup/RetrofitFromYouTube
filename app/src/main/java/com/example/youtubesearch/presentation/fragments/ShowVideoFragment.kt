@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import com.example.youtubesearch.domain.models.VideoModel
 import com.youtubesearch.databinding.FragmentShowVideoBinding
 
 class ShowVideoFragment : Fragment() {
@@ -25,15 +24,13 @@ class ShowVideoFragment : Fragment() {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun startWebView(){
+    private fun startWebView() {
         binding.webView.webViewClient = WebViewClient()
         binding.webView.apply {
             settings.javaScriptEnabled = true
-            arguments?.getString("videoId")?.let { loadUrl("https://www.youtube.com/watch?v=$it")
-                Log.d("startWebView", it)
+            arguments?.getString("videoId")?.let {
+                loadUrl("https://www.youtube.com/watch?v=$it")
             }
         }
-
     }
-
 }

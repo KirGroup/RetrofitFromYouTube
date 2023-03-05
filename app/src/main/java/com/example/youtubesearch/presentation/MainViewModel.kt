@@ -1,12 +1,12 @@
 package com.example.youtubesearch.presentation
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.youtubesearch.data.VideoListRepositoryImpl
+import com.example.youtubesearch.data.database.VideosDataBase
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.domain.usecases.ClearListUseCase
 import com.example.youtubesearch.domain.usecases.GetSearchResultUseCase
@@ -27,17 +27,18 @@ class MainViewModel : ViewModel() {
     private val _videoModelList: MutableLiveData<List<VideoModel>> = MutableLiveData()
     val videoModelList: LiveData<List<VideoModel>> = _videoModelList
 
-    suspend fun insertVideo(videoModel: VideoModel, context: Context) {
-        insertVideo.insertVideos(videoModel, context)
+    private lateinit var dbVideos: VideosDataBase
+
+    fun insertVideo(videoModel: VideoModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            insertVideo.insertVideos(videoModel)
+        }
     }
 
-    fun getSearchResult(word: String, context: Context) {
+    fun getSearchResult(word: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val searchResult = getSearchResult.getSearchResult(word, context)
+            val searchResult = getSearchResult.getSearchResult(word)
             _videoModelList.postValue(searchResult)
-
-            if (searchResult.isNotEmpty())
-                Log.d("fromApi", "viewModel receive ${searchResult[0].id.videoId}")
         }
     }
 
@@ -48,4 +49,4 @@ class MainViewModel : ViewModel() {
     suspend fun clearVideos() {
         clearVideos.clearVideos()
     }
-} 
+}

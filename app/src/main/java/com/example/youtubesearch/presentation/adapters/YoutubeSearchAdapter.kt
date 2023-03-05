@@ -1,19 +1,18 @@
 package com.example.youtubesearch.presentation.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.youtubesearch.presentation.adapters.holder.MyViewHolder
 import com.example.youtubesearch.domain.models.VideoModel
+import com.example.youtubesearch.presentation.MainViewModel
+import com.example.youtubesearch.presentation.adapters.holder.MyViewHolder
 import com.youtubesearch.R
 import com.youtubesearch.databinding.CustomItemLayoutBinding
 import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
 
-class YoutubeSearchAdapter: ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
+class YoutubeSearchAdapter : ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
 
     var onItemClickListener: ((VideoModel) -> Unit)? = null
     private lateinit var context: Context
@@ -26,9 +25,8 @@ class YoutubeSearchAdapter: ListAdapterCards<VideoModel, MyViewHolder>(DiffCallB
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Log.d("fromApi", "List in adapter ${currentList[position].id.videoId}")
         holder.btnPlay.setOnClickListener {
-//                MainViewModel().insertVideo(getItem(position), mContext)
+            MainViewModel().insertVideo(getItem(position))
             onItemClickListener?.invoke(getItem(position))
         }
 

@@ -2,9 +2,7 @@ package com.example.youtubesearch.presentation.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.youtubesearch.R
 import com.youtubesearch.databinding.ActivityMainBinding
-import com.youtubesearch.databinding.FragmentHomeBinding
 
 class MainActivity : AppCompatActivity() {
 

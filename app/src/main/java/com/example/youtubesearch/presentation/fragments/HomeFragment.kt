@@ -1,10 +1,10 @@
+
 package com.example.youtubesearch.presentation.fragments
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -37,8 +37,6 @@ class HomeFragment : Fragment() {
     var searchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
 
-    private var listVideos: List<VideoModel> = listOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -64,13 +62,11 @@ class HomeFragment : Fragment() {
 
         viewModel.videoModelList.observe(viewLifecycleOwner) {
             setAdapter(it)
-            Log.d("fromApi", "observe: ${it.size}")
         }
     }
 
-     fun getSearchResult(word: String) {
-         Log.d("fromApi", "word in HomeFragment $word")
-         viewModel.getSearchResult(word, requireContext())
+    fun getSearchResult(word: String) {
+        viewModel.getSearchResult(word)
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
@@ -96,7 +92,7 @@ class HomeFragment : Fragment() {
         searchVideos()
     }
 
-    fun searchVideos() {
+    private fun searchVideos() {
         searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -104,17 +100,17 @@ class HomeFragment : Fragment() {
 
                 val imm: InputMethodManager? =
                     activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                imm?.hideSoftInputFromWindow(mConstraintLayoutHome.getWindowToken(), 0)
+                imm?.hideSoftInputFromWindow(mConstraintLayoutHome.windowToken, 0)
 
-//                if (isNetworkConnected()) {
-                    getSearchResult(searchWord)
-//                } else {
-//                    Toast.makeText(
-//                        context,
-//                        getString(R.string.text_string_please_check_network),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
+                if (isNetworkConnected()) {
+                getSearchResult(searchWord)
+                } else {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.text_string_please_check_network),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
                 return true
             }
 
@@ -136,13 +132,7 @@ class HomeFragment : Fragment() {
     }
 
     fun isNetworkConnected(): Boolean {
-        if (
-            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)?.state == NetworkInfo.State.CONNECTED ||
-            mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)?.state == NetworkInfo.State.CONNECTED
-        ) {
-            return true
-        } else {
-            return false
-        }
+        return mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)?.state == NetworkInfo.State.CONNECTED ||
+                mConnectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)?.state == NetworkInfo.State.CONNECTED
     }
 }

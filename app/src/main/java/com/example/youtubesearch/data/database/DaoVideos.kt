@@ -1,6 +1,5 @@
 package com.example.youtubesearch.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -19,5 +18,5 @@ interface DaoVideos {
     suspend fun clearVideos()
 
     @Query("SELECT*FROM VideoModelEntity")
-    suspend fun getVideos():List<VideoModel>
+    suspend fun getVideos(): List<VideoModel>
 }

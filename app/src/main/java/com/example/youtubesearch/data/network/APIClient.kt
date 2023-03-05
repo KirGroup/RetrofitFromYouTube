@@ -6,9 +6,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object APIClient {
-    const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
+    private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
     const val API_KEY = "AIzaSyBrU621RIfkCzOA213E558O9WW33WMjh7Y"
-//    const val API_KEY = "AIzaSyB4SC8xrZutFZz1CqqSBop8hCYuwLDONiw"
+
+    //    const val API_KEY = "AIzaSyB4SC8xrZutFZz1CqqSBop8hCYuwLDONiw"
     const val part = "&part=snippet"
     const val SCH = "search?"
     const val mx = "&maxResults=20"
