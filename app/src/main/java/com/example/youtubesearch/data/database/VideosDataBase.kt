@@ -21,9 +21,10 @@ abstract class VideosDataBase : RoomDatabase() {
     abstract val daoVideos: DaoVideos
 
     companion object {
-        @Volatile private var instance: VideosDataBase? = null
+        @Volatile
+        private var instance: VideosDataBase? = null
 
-        const val NAME_DATABASE = "VideoModel.db"
+        private const val NAME_DATABASE = "VideoModel.db"
 
         fun getInstance(context: Context): VideosDataBase {
             return instance ?: synchronized(this) {

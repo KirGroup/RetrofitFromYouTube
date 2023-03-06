@@ -1,10 +1,8 @@
 package com.example.youtubesearch.presentation
 
+import android.app.Application
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.youtubesearch.data.VideoListRepositoryImpl
 import com.example.youtubesearch.data.database.VideosDataBase
 import com.example.youtubesearch.domain.models.VideoModel
@@ -15,7 +13,7 @@ import com.example.youtubesearch.domain.usecases.InsertVideoListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
     private val repository = VideoListRepositoryImpl
 
@@ -27,11 +25,11 @@ class MainViewModel : ViewModel() {
     private val _videoModelList: MutableLiveData<List<VideoModel>> = MutableLiveData()
     val videoModelList: LiveData<List<VideoModel>> = _videoModelList
 
-    private lateinit var dbVideos: VideosDataBase
+    private var dbVideos = (getApplication() as App).database
 
     fun insertVideo(videoModel: VideoModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            insertVideo.insertVideos(videoModel)
+            insertVideo.insertVideos(videoModel, dbVideos)
         }
     }
 

@@ -1,20 +1,19 @@
-package com.example.youtubesearch.presentation.adapters
+package com.example.youtubesearch.presentation.adapters.favoriteadapter
 
-import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
-import com.example.youtubesearch.data.database.VideosDataBase
 import com.example.youtubesearch.domain.models.VideoModel
-import com.example.youtubesearch.presentation.App
-import com.example.youtubesearch.presentation.MainViewModel
+import com.example.youtubesearch.presentation.adapters.DiffCallBack
 import com.example.youtubesearch.presentation.adapters.holder.MyViewHolder
 import com.youtubesearch.R
 import com.youtubesearch.databinding.CustomItemLayoutBinding
-import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
 
-class YoutubeSearchAdapter(val viewModel: MainViewModel) : ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
+class YoutubeFavoriteAdapter : ListAdapter<VideoModel, MyViewHolder>(
+    DiffCallBack()
+) {
 
     var onItemClickListener: ((VideoModel) -> Unit)? = null
     private lateinit var context: Context
@@ -28,7 +27,6 @@ class YoutubeSearchAdapter(val viewModel: MainViewModel) : ListAdapterCards<Vide
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.btnPlay.setOnClickListener {
-            viewModel.insertVideo(getItem(position))
             onItemClickListener?.invoke(getItem(position))
         }
 

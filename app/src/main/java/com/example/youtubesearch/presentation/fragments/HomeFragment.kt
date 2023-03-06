@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -58,7 +59,11 @@ class HomeFragment : Fragment() {
         mConstraintLayoutHome = binding.constraintLayoutHome
 
         recyclerViewHome = binding.recyclerViewHome
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return MainViewModel(requireActivity().application) as T
+            }
+        }).get(MainViewModel::class.java)
 
         viewModel.videoModelList.observe(viewLifecycleOwner) {
             setAdapter(it)
@@ -70,7 +75,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setAdapter(searchVideosList: List<VideoModel>) {
-        youtubeSearchAdapter = YoutubeSearchAdapter()
+        youtubeSearchAdapter = YoutubeSearchAdapter(viewModel)
         recyclerViewHome.adapter = youtubeSearchAdapter
         youtubeSearchAdapter.submitList(searchVideosList)
         youtubeSearchAdapter.onItemClickListener = {
