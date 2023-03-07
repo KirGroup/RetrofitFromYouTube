@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application)  {
 
-    private val repository = VideoListRepositoryImpl
+    private val repository = VideoListRepositoryImpl(application)
 
     private val insertVideo = InsertVideoListUseCase(repository)
     private val getSearchResult = GetSearchResultUseCase(repository)

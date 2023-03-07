@@ -1,21 +1,23 @@
 package com.example.youtubesearch.data
 
+import android.content.Context
 import com.example.youtubesearch.data.database.VideosDataBase
 import com.example.youtubesearch.data.network.APIClient
 import com.example.youtubesearch.domain.models.ResponseModel
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.domain.usecases.VideoListRepository
 
-object VideoListRepositoryImpl : VideoListRepository {
+class VideoListRepositoryImpl(context: Context) : VideoListRepository {
 
-    private lateinit var dbVideos: VideosDataBase
+    private var dbVideos: VideosDataBase = VideosDataBase.getInstance(context)
 
     override suspend fun insertVideo(videoModel: VideoModel, dbVideos: VideosDataBase) {
         this.dbVideos = dbVideos
         dbVideos.daoVideos.insertVideos(videoModel)
     }
 
-    override suspend fun getSearchResult(word: String): List<VideoModel> {
+    override suspend fun getSearchResult(word: String
+    ): List<VideoModel> {
         if (word.isNotEmpty()) {
             val response = APIClient.instance.searchVideo(
                 APIClient.API_KEY,

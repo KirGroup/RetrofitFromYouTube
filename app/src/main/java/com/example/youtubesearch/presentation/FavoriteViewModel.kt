@@ -16,13 +16,11 @@ import kotlinx.coroutines.launch
 
 class FavoriteViewModel(application: Application) : AndroidViewModel(application)  {
 
-    private val repository = VideoListRepositoryImpl
+    private val repository = VideoListRepositoryImpl(application)
     private val getVideoListUseCase = GetVideoListUseCase(repository)
 
     private val _favoriteVideoModelList: MutableLiveData<List<VideoModel>> = MutableLiveData()
     val favoriteVideoModelList: LiveData<List<VideoModel>> = _favoriteVideoModelList
-
-    private var dbVideos = (getApplication() as App).database
 
     fun getFavoriteVideoList() {
         viewModelScope.launch(Dispatchers.IO) {
