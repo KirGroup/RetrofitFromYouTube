@@ -38,11 +38,11 @@ class MainFragment : Fragment() {
         mainBottomNavigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.homeFragment -> {
-                    findNavController().navigate(R.id.nav_saveFragment_to_homeFragment)
+                    findNavController().navigate(R.id.homeFragment)
                     true
                 }
                 R.id.saveFragment -> {
-                    findNavController().navigate(R.id.nav_homeFragment_to_saveFragment)
+                    findNavController().navigate(R.id.saveFragment)
                     true
                 }
                 else -> false
