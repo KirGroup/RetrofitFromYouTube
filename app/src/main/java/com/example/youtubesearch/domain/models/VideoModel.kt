@@ -23,7 +23,7 @@ class DaoConverter {
 
     @TypeConverter
     fun snippetToString(snippetModel: SnippetModel): String {
-        return snippetModel.title + ":" + snippetModel.thumbnails.medium.url
+        return snippetModel.title + "space" + snippetModel.thumbnails.medium.url
     }
 
     @TypeConverter
@@ -32,6 +32,5 @@ class DaoConverter {
 
     @TypeConverter
     fun stringToSnippet(id: String): SnippetModel =
-        SnippetModel("", id.split(":")[0], "", ThumbnailModel(MediumModel(id.split(":")[1])))
-
+        SnippetModel("", id.split("space")[0], "", ThumbnailModel(MediumModel(id.split("space")[1])))
 }

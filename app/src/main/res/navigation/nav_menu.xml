@@ -21,6 +21,13 @@
         android:id="@+id/saveFragment"
         android:name="com.example.youtubesearch.presentation.fragments.SaveFragment"
         android:label="fragment_save">
+        <action
+            android:id="@+id/nav_homeFragment_to_showVideoFragment"
+            app:destination="@id/showVideoFragment" >
+            <argument
+                android:name="url"
+                app:argType="string"/>
+        </action>
     </fragment>
 
     <fragment

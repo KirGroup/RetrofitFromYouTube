@@ -1,6 +1,7 @@
 package com.example.youtubesearch.presentation.adapters.favoriteadapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -29,7 +30,7 @@ class YoutubeFavoriteAdapter : ListAdapter<VideoModel, MyViewHolder>(
         holder.btnPlay.setOnClickListener {
             onItemClickListener?.invoke(getItem(position))
         }
-
+        Log.d("onBindViewHolder", "onBindViewHolder: ${getItem(position).snippet.thumbnails.medium.url}")
         Glide.with(context).load(getItem(position).snippet.thumbnails.medium.url)
             .placeholder(R.drawable.splash_theme)
             .into(holder.imageViewThumbnail)
