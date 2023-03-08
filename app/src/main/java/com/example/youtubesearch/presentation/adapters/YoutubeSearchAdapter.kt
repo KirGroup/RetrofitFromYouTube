@@ -1,0 +1,42 @@
+package com.example.youtubesearch.presentation.adapters
+
+import android.app.Application
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.example.youtubesearch.data.database.VideosDataBase
+import com.example.youtubesearch.domain.models.VideoModel
+import com.example.youtubesearch.presentation.App
+import com.example.youtubesearch.presentation.MainViewModel
+import com.example.youtubesearch.presentation.adapters.holder.MyViewHolder
+import com.youtubesearch.R
+import com.youtubesearch.databinding.CustomItemLayoutBinding
+import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
+
+class YoutubeSearchAdapter(val viewModel: MainViewModel) : ListAdapterCards<VideoModel, MyViewHolder>(DiffCallBack()) {
+
+    var onItemClickListener: ((VideoModel) -> Unit)? = null
+    private lateinit var context: Context
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        context = parent.context
+        return MyViewHolder(
+            CustomItemLayoutBinding.inflate(LayoutInflater.from(context))
+        )
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.btnPlay.setOnClickListener {
+            viewModel.insertVideo(getItem(position))
+            onItemClickListener?.invoke(getItem(position))
+        }
+
+        Glide.with(context).load(getItem(position).snippet.thumbnails.medium.url)
+            .placeholder(R.drawable.splash_theme)
+            .into(holder.imageViewThumbnail)
+        holder.textViewTitle.text = getItem(position).snippet.title
+        holder.textViewDescription.text = getItem(position).snippet.description
+        holder.textViewTime.text = getItem(position).snippet.publishedAt
+    }
+}

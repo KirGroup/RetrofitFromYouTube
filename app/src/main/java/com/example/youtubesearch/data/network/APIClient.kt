@@ -1,21 +1,20 @@
-package com.example.youtubesearch.network
+package com.example.youtubesearch.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 object APIClient {
-    const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
-    const val API_KEY = "AIzaSyDmFZTIzBcTqZxijs9NDy0ZYPsbCbvSCLg"
+    private const val BASE_URL = "https://www.googleapis.com/youtube/v3/"
+    const val API_KEY = "AIzaSyBrU621RIfkCzOA213E558O9WW33WMjh7Y"
+
+    //    const val API_KEY = "AIzaSyB4SC8xrZutFZz1CqqSBop8hCYuwLDONiw"
     const val part = "&part=snippet"
     const val SCH = "search?"
     const val mx = "&maxResults=20"
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
         .addInterceptor { chain ->
             val original = chain.request()
 
@@ -24,15 +23,20 @@ object APIClient {
 
             val request = requestBuilder.build()
             chain.proceed(request)
-        }.build() //TODO change without 2 addInterceptor
+        }
+        .addInterceptor(
+            HttpLoggingInterceptor()
+                .setLevel(level = HttpLoggingInterceptor.Level.BODY)
+        ).build()
 
     val instance: APIInterface by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
-//            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient)
             .build()
 
         retrofit.create(APIInterface::class.java)
     }
+
 }
