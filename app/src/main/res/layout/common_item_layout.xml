@@ -7,7 +7,6 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutCustomItemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/material_dimen_ldpi">
@@ -20,25 +19,25 @@
             android:focusable="true"
             android:padding="@dimen/material_dimen_small_hdpi"
             android:src="@drawable/ic_play_arrow"
-            app:layout_constraintBottom_toBottomOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintEnd_toEndOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintStart_toStartOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintTop_toTopOf="@id/imageviewCustomItemLayout" />
+            app:layout_constraintBottom_toBottomOf="@id/imagePreview"
+            app:layout_constraintEnd_toEndOf="@id/imagePreview"
+            app:layout_constraintStart_toStartOf="@id/imagePreview"
+            app:layout_constraintTop_toTopOf="@id/imagePreview" />
 
         <ImageView
-            android:id="@+id/imageviewCustomItemLayout"
+            android:id="@+id/imagePreview"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/splash_theme"
             app:layout_constraintDimensionRatio="4:2"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textviewCustomItemLayoutHeading"
+            app:layout_constraintEnd_toStartOf="@id/tvTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textviewCustomItemLayoutHeading"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
@@ -50,11 +49,11 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@id/imageviewCustomItemLayout"
+            app:layout_constraintStart_toEndOf="@id/imagePreview"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textviewCustomItemLayoutChannel"
+            android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
@@ -63,14 +62,14 @@
             android:text="@string/app_name"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/textviewCustomItemLayoutViews"
+            app:layout_constraintBottom_toTopOf="@id/tvTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintTop_toBottomOf="@id/textviewCustomItemLayoutHeading" />
+            app:layout_constraintStart_toEndOf="@id/imagePreview"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <TextView
-            android:id="@+id/textviewCustomItemLayoutViews"
+            android:id="@+id/tvTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/material_dimen_mdpi"
@@ -82,7 +81,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@id/imageviewCustomItemLayout"
-            app:layout_constraintTop_toBottomOf="@id/textviewCustomItemLayoutChannel" />
+            app:layout_constraintStart_toEndOf="@id/imagePreview"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

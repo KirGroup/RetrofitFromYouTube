@@ -5,12 +5,13 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.squareup.moshi.Json
 
+const val DELIMITER = "space"
+
 @Entity(tableName = "VideoModelEntity")
 data class VideoModel(
     @PrimaryKey
     @field:Json(name = "id")
     var id: VideoIDModel,
-
     @field:Json(name = "snippet")
     var snippet: SnippetModel
 )
@@ -18,19 +19,27 @@ data class VideoModel(
 class DaoConverter {
 
     @TypeConverter
-    fun idToString(videoIDModel: VideoIDModel): String =
-        videoIDModel.videoId
+    fun idToString(videoIdModel: VideoIDModel): String =
+        videoIdModel.videoId
 
     @TypeConverter
     fun snippetToString(snippetModel: SnippetModel): String {
-        return snippetModel.title + "space" + snippetModel.thumbnails.medium.url
+        return snippetModel.publishedAt + DELIMITER + snippetModel.title + DELIMITER +
+               snippetModel.description + DELIMITER + snippetModel.thumbnails.medium.url
     }
 
     @TypeConverter
-    fun stringToId(id: String): VideoIDModel =
-        VideoIDModel("", id)
+    fun stringToId(responseId: String): VideoIDModel =
+        VideoIDModel("", responseId)
 
     @TypeConverter
-    fun stringToSnippet(id: String): SnippetModel =
-        SnippetModel("", id.split("space")[0], "", ThumbnailModel(MediumModel(id.split("space")[1])))
+    fun stringToSnippet(responseSnippet: String): SnippetModel {
+        val values = responseSnippet.split(DELIMITER)
+        return SnippetModel(
+            values[0],
+            values[1],
+            values[2],
+            ThumbnailModel(MediumModel(values[3]))
+        )
+    }
 }

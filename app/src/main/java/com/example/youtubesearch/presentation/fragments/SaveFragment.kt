@@ -12,11 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.presentation.FavoriteViewModel
-import com.example.youtubesearch.presentation.MainViewModel
-import com.example.youtubesearch.presentation.adapters.YoutubeSearchAdapter
 import com.example.youtubesearch.presentation.adapters.favoriteadapter.YoutubeFavoriteAdapter
 import com.youtubesearch.R
-import com.youtubesearch.databinding.FragmentHomeBinding
 import com.youtubesearch.databinding.FragmentSaveBinding
 
 class SaveFragment : Fragment() {

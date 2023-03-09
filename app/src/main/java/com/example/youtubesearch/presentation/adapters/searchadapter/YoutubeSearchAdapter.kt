@@ -1,20 +1,21 @@
-package com.example.youtubesearch.presentation.adapters.favoriteadapter
+package com.example.youtubesearch.presentation.adapters.searchadapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.example.youtubesearch.domain.models.VideoModel
+import com.example.youtubesearch.presentation.MainViewModel
 import com.example.youtubesearch.presentation.adapters.CommonViewHolder
 import com.example.youtubesearch.presentation.adapters.DiffCallBack
 import com.youtubesearch.R
 import com.youtubesearch.databinding.CommonItemLayoutBinding
+import androidx.recyclerview.widget.ListAdapter as ListAdapterCards
 
-class YoutubeFavoriteAdapter : ListAdapter<VideoModel, CommonViewHolder>(
-    DiffCallBack()
-) {
+class YoutubeSearchAdapter(val viewModel: MainViewModel) :
+    ListAdapterCards<VideoModel, CommonViewHolder>(
+        DiffCallBack()
+    ) {
 
     var onItemClickListener: ((VideoModel) -> Unit)? = null
     private lateinit var context: Context
@@ -28,6 +29,7 @@ class YoutubeFavoriteAdapter : ListAdapter<VideoModel, CommonViewHolder>(
 
     override fun onBindViewHolder(holder: CommonViewHolder, position: Int) {
         holder.btnPlay.setOnClickListener {
+            viewModel.insertVideo(getItem(position))
             onItemClickListener?.invoke(getItem(position))
         }
 
@@ -38,6 +40,5 @@ class YoutubeFavoriteAdapter : ListAdapter<VideoModel, CommonViewHolder>(
         holder.time.text = getItem(position).snippet.publishedAt
         holder.title.text = getItem(position).snippet.title
         holder.description.text = getItem(position).snippet.description
-        Log.d("onBindViewHolder", "time - ${getItem(position).snippet.publishedAt}, title - ${getItem(position).snippet.title}, description - ${getItem(position).snippet.description}, url - ${getItem(position).snippet.thumbnails.medium.url}")
     }
 }
