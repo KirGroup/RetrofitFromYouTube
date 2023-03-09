@@ -1,9 +1,6 @@
 package com.example.youtubesearch.data.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.youtubesearch.domain.models.VideoModel
 
 @Dao
@@ -14,8 +11,8 @@ interface DaoVideos {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertListVideos(videoModelList: List<VideoModel>)
 
-    @Query("DELETE FROM VideoModelEntity")
-    suspend fun clearVideos()
+    @Delete
+    suspend fun hideVideo(videoModel: VideoModel)
 
     @Query("SELECT*FROM VideoModelEntity")
     suspend fun getVideos(): List<VideoModel>

@@ -38,7 +38,7 @@ class VideoListRepositoryImpl(context: Context) : VideoListRepository {
         return dbVideos.daoVideos.getVideos()
     }
 
-    override suspend fun clearVideos() {
-        dbVideos.daoVideos.clearVideos()
+    override suspend fun hideVideo(videoModel: VideoModel) {
+        dbVideos.daoVideos.hideVideo(videoModel)
     }
 }

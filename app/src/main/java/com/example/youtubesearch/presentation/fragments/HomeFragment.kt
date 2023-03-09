@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.youtubesearch.domain.models.VideoModel
 import com.example.youtubesearch.presentation.MainViewModel
@@ -82,6 +83,30 @@ class HomeFragment : Fragment() {
             val bundle = bundleOf("videoId" to it.id.videoId)
             findNavController().navigate(R.id.nav_homeFragment_to_showVideoFragment, bundle)
         }
+        setupSwipeListener(recyclerViewHome)
+    }
+
+    private fun setupSwipeListener(rvShopList: RecyclerView) {
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val item = youtubeSearchAdapter.currentList[viewHolder.adapterPosition]
+                viewModel.hideVideo(item, viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rvShopList)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

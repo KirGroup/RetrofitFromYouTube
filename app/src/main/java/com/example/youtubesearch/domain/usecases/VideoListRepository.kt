@@ -8,5 +8,5 @@ interface VideoListRepository {
     suspend fun insertVideo(videoModel: VideoModel, dbVideos: VideosDataBase)
     suspend fun getSearchResult(word: String): List<VideoModel>
     suspend fun getVideoList(): List<VideoModel>
-    suspend fun clearVideos()
+    suspend fun hideVideo(videoModel: VideoModel)
 }
